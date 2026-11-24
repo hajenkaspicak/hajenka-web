@@ -47,14 +47,19 @@ reviews_title: Co o nás píší hosté
 reviews:
   - name: Radunka s rodinou
     stay: Hájenka Špičák
-    date: 21.3.2022, ubytováni - zima 2022
+    date: 21. 3. 2022, ubytováni - zima 2022
     text: Naprostá spokojenost, neskuteční majitelé jsou v objektu, ale pokud je nevyhledáte ani o nich nevíte. Paní moc dobře vaří, pán skvěle vypráví o Šumavě, budeme se tam jistě rádi vracet.
   - name: Roland a Iva Goltschovi v páru
     stay: Hájenka Špičák
-    date: 16.11.2018, ubytováni - zima 2018
+    date: 16. 11. 2018, ubytováni - zima 2018
     text: |-
       + Úžasní majitelé, rodinná pohoda skvělé místo a hlavně klid.
+
       - Že se vždy musíme vrátit domů.
+  - name: Zdenek a Iva v páru
+    stay: Hájenka Špičák
+    date: 21. 9. 2018, ubytováni - podzim 2018
+    text: Naprosty klid. Uzasni majitele, skvela kuchyne. Vsem doporucujeme. Bylo o nas pecovano jako v bavlnce.
 contact_title: Poptávka a kontakt
 contact_intro: Napište nám termín a počet osob. Odpovíme e-mailem s konkrétní cenou.
 ---
