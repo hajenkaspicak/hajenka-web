@@ -1,0 +1,115 @@
+---
+// Poptávkový formulář. Odesílá přes Web3Forms na e-mail, ke kterému patří klíč.
+// Ochrana proti spamu: skryté pole „botcheck“ + captcha podle nastavení webu:
+//   hcaptcha  – zdarma (Web3Forms Free), výchozí
+//   recaptcha – Google reCAPTCHA v3, vyžaduje Web3Forms Pro a vlastní klíče
+//   none      – bez captchy
+// Skript captchy se načte až ve chvíli, kdy návštěvník začne formulář vyplňovat.
+import { site } from '../lib/content';
+
+const objects = (Astro.props.objects ?? []) as { slug: string; data: { title: string } }[];
+const key = site.web3forms_key;
+const captcha = site.captcha === 'recaptcha' && site.recaptcha_site_key ? 'recaptcha' : site.captcha === 'none' ? 'none' : 'hcaptcha';
+const HCAPTCHA_WEB3FORMS_FREE_KEY = '50b2fe65-b00b-4b9e-ad62-3ba471098be2';
+const redirect = new URL('/dekujeme/', Astro.site).href;
+---
+{!key && <p class="notice">Formulář se zapne po vložení klíče Web3Forms v administraci (Nastavení webu).</p>}
+<form
+  class="enquiry"
+  id="poptavka"
+  method="POST"
+  action="https://api.web3forms.com/submit"
+  data-captcha={captcha}
+  data-hcaptcha-key={HCAPTCHA_WEB3FORMS_FREE_KEY}
+  data-recaptcha-key={site.recaptcha_site_key}
+>
+  <input type="hidden" name="access_key" value={key} />
+  <input type="hidden" name="subject" value={`Poptávka z webu ${site.name}`} />
+  <input type="hidden" name="from_name" value={`Web ${site.name}`} />
+  <input type="hidden" name="redirect" value={redirect} />
+  <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+  <div class="field"><label for="f-name">Jméno a příjmení</label><input id="f-name" name="name" required autocomplete="name" /></div>
+  <div class="field row">
+    <div class="field"><label for="f-email">E-mail</label><input id="f-email" name="email" type="email" required autocomplete="email" /></div>
+    <div class="field"><label for="f-phone">Telefon <span class="opt">(nepovinné)</span></label><input id="f-phone" name="telefon" type="tel" autocomplete="tel" /></div>
+  </div>
+  <div class="field">
+    <label for="f-object">Ubytování</label>
+    <select id="f-object" name="ubytovani">
+      {objects.map((o) => <option value={o.data.title}>{o.data.title}</option>)}
+      <option value="Zatím nevím">Zatím nevím</option>
+    </select>
+  </div>
+  <div class="field row three">
+    <div class="field"><label for="f-arrival">Příjezd</label><input id="f-arrival" name="prijezd" type="date" /></div>
+    <div class="field"><label for="f-departure">Odjezd</label><input id="f-departure" name="odjezd" type="date" /></div>
+    <div class="field"><label for="f-persons">Počet osob</label><input id="f-persons" name="pocet_osob" type="number" min="1" max="10" inputmode="numeric" /></div>
+  </div>
+  <div class="field"><label for="f-message">Zpráva</label><textarea id="f-message" name="message" rows="5" required></textarea></div>
+
+  {captcha === 'hcaptcha' && <div class="captcha" data-captcha-box></div>}
+  {captcha === 'recaptcha' && <input type="hidden" name="g-recaptcha-response" />}
+  <p class="form-error" role="alert" hidden></p>
+
+  <p class="small">
+    Údaje z formuláře použijeme jen k odpovědi na vaši poptávku. Více v <a href="/ochrana-osobnich-udaju/">zásadách ochrany osobních údajů</a>.
+    {captcha !== 'none' && <> Formulář chrání proti spamu {captcha === 'hcaptcha' ? 'hCaptcha' : 'Google reCAPTCHA'}, viz <a href="/cookies/">Cookies</a>.</>}
+  </p>
+  <div><button class="btn" type="submit" disabled={!key}>Odeslat poptávku</button></div>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('form.enquiry');
+  if (form) {
+    const mode = form.dataset.captcha;
+    const err = form.querySelector<HTMLElement>('.form-error')!;
+    const showError = (msg: string) => { err.textContent = msg; err.hidden = false; };
+    let loading = false;
+    let widget: string | undefined;
+
+    const load = (src: string) =>
+      new Promise<void>((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src; s.async = true; s.onload = () => resolve(); s.onerror = () => reject();
+        document.head.appendChild(s);
+      });
+
+    // Načíst captchu až při první interakci s formulářem (žádné skripty třetích stran předem).
+    const start = async () => {
+      if (loading || mode === 'none') return;
+      loading = true;
+      try {
+        if (mode === 'hcaptcha') {
+          await load('https://js.hcaptcha.com/1/api.js?render=explicit&hl=cs');
+          const box = form.querySelector<HTMLElement>('[data-captcha-box]')!;
+          // @ts-ignore – globální objekt hCaptcha
+          widget = window.hcaptcha.render(box, { sitekey: form.dataset.hcaptchaKey });
+        } else if (mode === 'recaptcha') {
+          await load(`https://www.google.com/recaptcha/api.js?render=${form.dataset.recaptchaKey}`);
+        }
+      } catch {
+        showError('Ochranu formuláře se nepodařilo načíst. Zkuste stránku obnovit, nebo nám napište e-mail.');
+      }
+    };
+    form.addEventListener('focusin', start, { once: true });
+    form.addEventListener('pointerdown', start, { once: true });
+
+    form.addEventListener('submit', (e) => {
+      err.hidden = true;
+      if (mode === 'hcaptcha') {
+        // @ts-ignore
+        const token = widget !== undefined && window.hcaptcha ? window.hcaptcha.getResponse(widget) : '';
+        if (!token) { e.preventDefault(); showError('Potvrďte prosím, že nejste robot.'); }
+      } else if (mode === 'recaptcha') {
+        const field = form.querySelector<HTMLInputElement>('input[name="g-recaptcha-response"]')!;
+        if (field.value) return;
+        e.preventDefault();
+        // @ts-ignore – globální objekt reCAPTCHA
+        const g = window.grecaptcha;
+        if (!g) { showError('Ochrana formuláře se ještě načítá, zkuste to prosím za chvíli.'); return; }
+        g.ready(() => g.execute(form.dataset.recaptchaKey, { action: 'submit' }).then((t: string) => { field.value = t; form.submit(); }));
+      }
+    });
+  }
+</script>

@@ -1,0 +1,138 @@
+# Sveltia CMS – nastavení administrace webu Hájenka Špičák.
+# Řádky označené DOPLNIT se mění podle kroků v průvodci.
+backend:
+  name: github
+  repo: DOPLNIT-UCET/DOPLNIT-REPOZITAR      # např. hajenka-admin/hajenka-web
+  branch: main
+  base_url: https://sveltia-cms-auth.DOPLNIT.workers.dev   # adresa přihlašovacího Workeru
+
+app_title: Hájenka Špičák – správa webu
+site_url: https://hajenkaspicak.cz
+display_url: https://hajenkaspicak.cz
+
+# Fotografie se ukládají do src/assets/uploads. Web je při sestavení sám zmenší
+# a převede do formátu WebP, takže stačí nahrát originál (ideálně do 5 MB).
+media_folder: src/assets/uploads
+public_folder: /src/assets/uploads
+
+singletons:
+  - name: site
+    label: Nastavení webu a kontakty
+    file: src/content/settings/site.json
+    fields:
+      - { name: name, label: Název webu, widget: string }
+      - { name: address, label: Adresa, widget: string, required: false, hint: "Zobrazí se v kontaktech a v patičce. Prázdné pole se nezobrazí." }
+      - { name: phone, label: Telefon, widget: string, required: false }
+      - { name: email, label: E-mail, widget: string, required: false }
+      - { name: operator, label: Provozovatel (jméno nebo firma a IČO), widget: string, required: false }
+      - { name: rating_value, label: Hodnocení hostů na e-chalupy.cz (číslo z 5), widget: number, value_type: float, min: 0, max: 5 }
+      - { name: rating_count, label: Počet hodnocení, widget: number, value_type: int, min: 0 }
+      - { name: rating_url, label: Odkaz na hodnocení (e-chalupy.cz), widget: string }
+      - { name: web3forms_key, label: Klíč formuláře Web3Forms (Access Key), widget: string, required: false, hint: "Bez klíče je formulář vypnutý. Poptávky chodí na e-mail, na který je klíč vydaný." }
+      - name: captcha
+        label: Ochrana formuláře proti spamu
+        widget: select
+        options:
+          - { label: "hCaptcha (zdarma)", value: hcaptcha }
+          - { label: "Google reCAPTCHA v3 (jen s placeným Web3Forms Pro)", value: recaptcha }
+          - { label: "Bez captchy", value: none }
+        hint: "reCAPTCHA funguje jen s předplatným Web3Forms Pro a vyplněným klíčem níže, jinak web použije hCaptcha."
+      - { name: recaptcha_site_key, label: reCAPTCHA – veřejný klíč (Site Key), widget: string, required: false }
+
+collections:
+  - name: pages
+    label: Stránky
+    media_folder: /src/assets/uploads
+    public_folder: ../../assets/uploads
+    files:
+      - name: home
+        label: Úvodní stránka
+        file: src/content/pages/home.md
+        fields:
+          - { name: title, label: Titulek v prohlížeči, widget: string }
+          - { name: description, label: Popis pro vyhledávače, widget: text }
+          - { name: hero_title, label: Hlavní nadpis (headline), widget: string, required: false, hint: "Když je prázdný, zobrazí se název webu." }
+          - { name: hero_lead, label: Podnadpis, widget: string, required: false }
+          - { name: hero_image, label: Hlavní obrázek (letecký snímek), widget: image, hint: "Na šířku, ideálně alespoň 2400 px." }
+          - { name: hero_alt, label: Popis hlavního obrázku pro čtečky, widget: string, required: false }
+          - { name: accommodation_title, label: "Ubytování: nadpis sekce", widget: string }
+          - { name: body, label: "Ubytování: úvodní text", widget: markdown }
+          - { name: gallery_title, label: "Galerie: nadpis", widget: string }
+          - name: gallery
+            label: Fotogalerie
+            widget: list
+            required: false
+            fields:
+              - { name: image, label: Fotografie, widget: image }
+              - { name: alt, label: Popis fotografie, widget: string, required: false }
+          - { name: trips_title, label: "Výlety: nadpis", widget: string }
+          - { name: trips_intro, label: "Výlety: úvodní věta", widget: string, required: false }
+          - name: trips
+            label: Výlety
+            widget: list
+            required: false
+            fields:
+              - { name: title, label: Název, widget: string }
+              - { name: distance, label: Vzdálenost, widget: string, required: false }
+              - { name: text, label: Popis, widget: text }
+              - { name: link, label: Odkaz (nepovinný), widget: string, required: false }
+          - { name: reviews_title, label: "Reference: nadpis", widget: string }
+          - name: reviews
+            label: Recenze hostů (z e-chalupy.cz)
+            widget: list
+            required: false
+            hint: "Vkládejte jen skutečné recenze, ideálně se jménem tak, jak je uvedené na e-chalupy.cz."
+            fields:
+              - { name: name, label: Jméno hosta, widget: string }
+              - { name: stay, label: Ubytování, widget: string, required: false }
+              - { name: date, label: Datum (např. srpen 2025), widget: string, required: false }
+              - { name: text, label: Text recenze, widget: text }
+          - { name: contact_title, label: "Kontakt: nadpis", widget: string }
+          - { name: contact_intro, label: "Kontakt: úvodní věta", widget: string, required: false }
+      - name: obchodni-podminky
+        label: Obchodní podmínky
+        file: src/content/pages/obchodni-podminky.md
+        fields: &legal
+          - { name: title, label: Nadpis, widget: string }
+          - { name: description, label: Popis pro vyhledávače, widget: text }
+          - { name: body, label: Text, widget: markdown }
+      - name: ochrana-osobnich-udaju
+        label: Ochrana osobních údajů
+        file: src/content/pages/ochrana-osobnich-udaju.md
+        fields: *legal
+      - name: cookies
+        label: Cookies
+        file: src/content/pages/cookies.md
+        fields: *legal
+      - name: dekujeme
+        label: Poděkování po odeslání formuláře
+        file: src/content/pages/dekujeme.md
+        fields: *legal
+
+  - name: objects
+    label: Ubytování a ceník
+    folder: src/content/objects
+    extension: md
+    format: frontmatter
+    create: false
+    delete: false
+    media_folder: /src/assets/uploads
+    public_folder: ../../assets/uploads
+    fields:
+      - { name: title, label: Název, widget: string }
+      - { name: tagline, label: Krátká věta pod názvem, widget: string }
+      - { name: order, label: Pořadí na webu, widget: number, value_type: int }
+      - { name: capacity, label: Kapacita, widget: string }
+      - { name: beds, label: Pokoje a lůžka, widget: string, required: false }
+      - { name: features, label: Vybavení a štítky, widget: list, field: { name: item, label: Položka, widget: string }, required: false }
+      - name: prices
+        label: Ceník
+        widget: list
+        required: false
+        fields:
+          - { name: item, label: "Položka (např. Hlavní sezóna, za osobu a noc)", widget: string }
+          - { name: price, label: Cena (např. 600 Kč), widget: string }
+      - { name: price_note, label: Poznámka pod ceníkem, widget: string, required: false }
+      - { name: photo, label: Fotografie, widget: image }
+      - { name: photo_alt, label: Popis fotografie, widget: string, required: false }
+      - { name: body, label: Popis, widget: markdown }

@@ -1,0 +1,166 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import EnquiryForm from '../components/EnquiryForm.astro';
+import Rating from '../components/Rating.astro';
+import { getPage, getObjects, site } from '../lib/content';
+import { typo } from '../lib/typo';
+
+const { data: home, Content: Intro } = await getPage('home');
+const objects = await getObjects();
+const indexable = import.meta.env.PUBLIC_INDEXABLE === 'true';
+const og = home.hero_image ? await getImage({ src: home.hero_image, width: 1200, format: 'jpeg' }) : undefined;
+// Plné rozlišení pro zvětšení v galerii
+const full = await Promise.all(home.gallery.map((g) => getImage({ src: g.image, width: 1800, format: 'webp' })));
+---
+<Base title={home.title} description={home.description} home ogImage={og?.src}>
+  <section class="hero" aria-labelledby="hero-title">
+    {home.hero_image && (
+      <Image src={home.hero_image} alt={home.hero_alt} widths={[800, 1280, 1920, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
+    )}
+    <div class="copy">
+      <div class="wrap">
+        <h1 id="hero-title">{typo(home.hero_title || site.name)}</h1>
+        {home.hero_lead && <p>{typo(home.hero_lead)}</p>}
+        <p class="actions"><a class="btn" href="#kontakt">Poptat pobyt</a> <a class="btn ghost light" href="#ubytovani">Prohlédnout ubytování</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="ubytovani" aria-labelledby="ubytovani-title">
+    <div class="wrap">
+      <h2 id="ubytovani-title">{typo(home.accommodation_title)}</h2>
+      <div class="lead prose"><Intro /></div>
+      {objects.map((o, i) => (
+        <article class={`object${i % 2 ? ' flip' : ''}`} id={o.slug} aria-labelledby={`${o.slug}-title`}>
+          <Image src={o.data.photo} alt={o.data.photo_alt} widths={[600, 900, 1300]} sizes="(min-width: 60rem) 34rem, 100vw" />
+          <div class="text">
+            <h3 id={`${o.slug}-title`}>{o.data.title}</h3>
+            <p class="tagline">{typo(o.data.tagline)}</p>
+            <div class="prose"><o.Content /></div>
+            <ul class="facts">
+              <li><span>Kapacita</span><span>{typo(o.data.capacity)}</span></li>
+              {o.data.beds && <li><span>Pokoje</span><span>{typo(o.data.beds)}</span></li>}
+            </ul>
+            {o.data.features.length > 0 && <ul class="chips">{o.data.features.map((f) => <li>{typo(f)}</li>)}</ul>}
+            {o.data.prices.length > 0 && (
+              <table class="prices">
+                <caption>Ceník</caption>
+                <tbody>
+                  {o.data.prices.map((p) => <tr><th scope="row">{typo(p.item)}</th><td class="num">{typo(p.price)}</td></tr>)}
+                </tbody>
+              </table>
+            )}
+            {o.data.price_note && <p class="small">{typo(o.data.price_note)}</p>}
+            <a class="btn ghost" href="#kontakt" data-object={o.data.title}>Poptat {o.data.title}</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  {home.gallery.length > 0 && (
+    <section class="section alt" id="galerie" aria-labelledby="galerie-title">
+      <div class="wrap">
+        <h2 id="galerie-title">{typo(home.gallery_title)}</h2>
+        <ul class="gallery">
+          {home.gallery.map((g, i) => (
+            <li>
+              <a href={full[i].src} data-lightbox aria-label={`Zvětšit fotografii ${i + 1}${g.alt ? `: ${g.alt}` : ''}`}>
+                <Image src={g.image} alt={g.alt} widths={[400, 700]} sizes="(min-width: 60rem) 22rem, 50vw" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <dialog class="lightbox" aria-label="Fotografie">
+        <img alt="" />
+        <form method="dialog"><button class="close" aria-label="Zavřít">×</button></form>
+        <button class="prev" type="button" aria-label="Předchozí">‹</button>
+        <button class="next" type="button" aria-label="Další">›</button>
+      </dialog>
+    </section>
+  )}
+
+  {home.trips.length > 0 && (
+    <section class="section" id="vylety" aria-labelledby="vylety-title">
+      <div class="wrap">
+        <h2 id="vylety-title">{typo(home.trips_title)}</h2>
+        {home.trips_intro && <p>{typo(home.trips_intro)}</p>}
+        <ul class="trips">
+          {home.trips.map((t) => (
+            <li>
+              <h3>{typo(t.title)}{t.distance && <span class="dist num">{typo(t.distance)}</span>}</h3>
+              <p>{typo(t.text)}</p>
+              {t.link && <p><a href={t.link} rel="noopener" target="_blank">Více informací</a></p>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <section class="section alt" id="reference" aria-labelledby="reference-title">
+    <div class="wrap">
+      <h2 id="reference-title">{typo(home.reviews_title)}</h2>
+      <Rating />
+      {home.reviews.length > 0 ? (
+        <ul class="reviews">
+          {home.reviews.map((r) => (
+            <li>
+              <blockquote><p>{typo(r.text)}</p></blockquote>
+              <p class="who">{r.name}{r.stay && ` · ${r.stay}`}{r.date && ` · ${r.date}`}</p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        !indexable && <p class="notice">Texty recenzí vložte v administraci (Úvodní stránka → Reference) ze stránky na e-chalupy.cz.</p>
+      )}
+      <p><a href={site.rating_url} rel="noopener" target="_blank">Všechna hodnocení na e-chalupy.cz</a></p>
+    </div>
+  </section>
+
+  <section class="section" id="kontakt" aria-labelledby="kontakt-title">
+    <div class="wrap contact">
+      <div>
+        <h2 id="kontakt-title">{typo(home.contact_title)}</h2>
+        {home.contact_intro && <p>{typo(home.contact_intro)}</p>}
+        <ul class="facts plain">
+          {site.address && <li><span>Adresa</span><span>{site.address}</span></li>}
+          {site.phone && <li><span>Telefon</span><a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a></li>}
+          {site.email && <li><span>E-mail</span><a href={`mailto:${site.email}`}>{site.email}</a></li>}
+        </ul>
+        {!site.address && !site.phone && !site.email && !indexable && <p class="notice">Adresu, telefon a e-mail doplňte v administraci (Nastavení webu).</p>}
+      </div>
+      <div><EnquiryForm objects={objects} /></div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Předvyplnit ubytování ve formuláři podle tlačítka „Poptat …“
+  document.querySelectorAll<HTMLAnchorElement>('a[data-object]').forEach((a) =>
+    a.addEventListener('click', () => {
+      const sel = document.querySelector<HTMLSelectElement>('#f-object');
+      if (sel) sel.value = a.dataset.object!;
+    }),
+  );
+
+  // Jednoduché zvětšení fotografií v galerii
+  const dlg = document.querySelector<HTMLDialogElement>('dialog.lightbox');
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('a[data-lightbox]')];
+  if (dlg && links.length) {
+    const img = dlg.querySelector('img')!;
+    let i = 0;
+    const show = (n: number) => {
+      i = (n + links.length) % links.length;
+      img.src = links[i].href;
+      img.alt = links[i].querySelector('img')?.alt ?? '';
+    };
+    links.forEach((a, n) => a.addEventListener('click', (e) => { e.preventDefault(); show(n); dlg.showModal(); }));
+    dlg.querySelector('.prev')!.addEventListener('click', () => show(i - 1));
+    dlg.querySelector('.next')!.addEventListener('click', () => show(i + 1));
+    dlg.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') show(i - 1); if (e.key === 'ArrowRight') show(i + 1); });
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+  }
+</script>

@@ -1,0 +1,91 @@
+---
+import '../styles/global.css';
+import frLatin from '@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url';
+import frExt from '@fontsource-variable/fraunces/files/fraunces-latin-ext-wght-normal.woff2?url';
+import fgLatin from '@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2?url';
+import fgExt from '@fontsource-variable/figtree/files/figtree-latin-ext-wght-normal.woff2?url';
+import { site } from '../lib/content';
+import { typo } from '../lib/typo';
+
+interface Props {
+  title: string;
+  description: string;
+  home?: boolean;
+  ogImage?: string;
+}
+const { title, description, home = false, ogImage } = Astro.props;
+const indexable = import.meta.env.PUBLIC_INDEXABLE === 'true';
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const fullTitle = home ? title : `${title} | ${site.name}`;
+const a = (id: string) => (home ? `#${id}` : `/#${id}`);
+const nav = [
+  ['ubytovani', 'Ubytování a ceník'],
+  ['galerie', 'Galerie'],
+  ['vylety', 'Výlety'],
+  ['reference', 'Reference'],
+];
+const year = new Date().getFullYear();
+---
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{typo(fullTitle)}</title>
+    <meta name="description" content={description} />
+    {!indexable && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="cs_CZ" />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={new URL(ogImage, Astro.site).href} />}
+    <meta name="theme-color" content="#1f3d2e" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href={frLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={fgLatin} as="font" type="font/woff2" crossorigin />
+    <style is:inline set:html={`
+@font-face{font-family:'Fraunces Variable';font-style:normal;font-display:swap;font-weight:100 900;src:url(${frExt}) format('woff2-variations');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Fraunces Variable';font-style:normal;font-display:swap;font-weight:100 900;src:url(${frLatin}) format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Figtree Variable';font-style:normal;font-display:swap;font-weight:300 900;src:url(${fgExt}) format('woff2-variations');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Figtree Variable';font-style:normal;font-display:swap;font-weight:300 900;src:url(${fgLatin}) format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+`} />
+  </head>
+  <body>
+    <a class="skip" href="#obsah">Přeskočit na obsah</a>
+    {!indexable && <div class="staging">Testovací verze webu. Texty, ceny a fotografie jsou zástupné, dokud je majitel nepotvrdí.</div>}
+    <header class="header">
+      <div class="wrap">
+        <a class="brand" href="/">{site.name}</a>
+        <nav class="nav" aria-label="Hlavní menu">
+          {nav.map(([id, label]) => <a href={a(id)}>{label}</a>)}
+          <a class="btn btn-sm" href={a('kontakt')}>Poptat pobyt</a>
+        </nav>
+      </div>
+    </header>
+    <main id="obsah"><slot /></main>
+    <footer class="footer">
+      <div class="wrap">
+        <div>
+          <h2>{site.name}</h2>
+          {site.address && <p>{site.address}</p>}
+          {site.operator && <p>Provozovatel: {site.operator}</p>}
+        </div>
+        <div>
+          <h2>Kontakt</h2>
+          {site.phone && <p>Telefon: <a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a></p>}
+          {site.email && <p>E-mail: <a href={`mailto:${site.email}`}>{site.email}</a></p>}
+          <p><a href={a('kontakt')}>Poptávkový formulář</a></p>
+        </div>
+        <div>
+          <h2>Informace</h2>
+          <p><a href="/obchodni-podminky/">Obchodní podmínky</a></p>
+          <p><a href="/ochrana-osobnich-udaju/">Ochrana osobních údajů</a></p>
+          <p><a href="/cookies/">Cookies</a></p>
+        </div>
+      </div>
+      <div class="wrap legal">© {year} {site.name}</div>
+    </footer>
+  </body>
+</html>

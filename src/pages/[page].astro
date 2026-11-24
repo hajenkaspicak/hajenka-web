@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import { getPage, LEGAL } from '../lib/content';
+
+export function getStaticPaths() {
+  return LEGAL.map((page) => ({ params: { page } }));
+}
+const { page } = Astro.params;
+const { data, Content } = await getPage(page!);
+---
+<Base title={data.title} description={data.description}>
+  <section class="section">
+    <div class="wrap prose">
+      <h1>{data.title}</h1>
+      <Content />
+    </div>
+  </section>
+</Base>

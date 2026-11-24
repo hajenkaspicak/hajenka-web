@@ -1,0 +1,11 @@
+---
+import { site } from '../lib/content';
+const value = site.rating_value.toLocaleString('cs', { minimumFractionDigits: 1 });
+const count = site.rating_count;
+---
+{site.rating_value > 0 && (
+  <a class="badge" href={site.rating_url} rel="noopener" target="_blank">
+    <strong class="num">{value}</strong>
+    <span>z 5 · {count} hodnocení hostů na e-chalupy.cz</span>
+  </a>
+)}
