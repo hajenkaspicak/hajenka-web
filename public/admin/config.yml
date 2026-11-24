@@ -2,7 +2,7 @@
 # Řádky označené DOPLNIT se mění podle kroků v průvodci.
 backend:
   name: github
-  repo: hajenkaspicak/hajenka-web      # např. hajenka-admin/hajenka-web
+  repo: hajenkaspicak/hajenka-web
   branch: main
   base_url: https://sveltia-cms-auth.hajenka-spicak.workers.dev   # adresa přihlašovacího Workeru
 
@@ -14,6 +14,11 @@ display_url: https://hajenkaspicak.cz
 # a převede do formátu WebP, takže stačí nahrát originál (ideálně do 5 MB).
 media_folder: src/assets/uploads
 public_folder: /src/assets/uploads
+
+# Jen vlastní nahrané fotky: bez knihovny ukázkových fotek (Pexels, Unsplash…) a bez vkládání odkazů.
+media_libraries:
+  stock_assets:
+    providers: []
 
 singletons:
   - name: site
@@ -53,7 +58,7 @@ collections:
           - { name: description, label: Popis pro vyhledávače, widget: text }
           - { name: hero_title, label: Hlavní nadpis (headline), widget: string, required: false, hint: "Když je prázdný, zobrazí se název webu." }
           - { name: hero_lead, label: Podnadpis, widget: string, required: false }
-          - { name: hero_image, label: Hlavní obrázek (letecký snímek), widget: image, hint: "Na šířku, ideálně alespoň 2400 px." }
+          - { name: hero_image, label: Hlavní obrázek (letecký snímek), widget: image, choose_url: false, hint: "Na šířku, ideálně alespoň 2400 px." }
           - { name: hero_alt, label: Popis hlavního obrázku pro čtečky, widget: string, required: false }
           - { name: accommodation_title, label: "Ubytování: nadpis sekce", widget: string }
           - { name: body, label: "Ubytování: úvodní text", widget: markdown }
@@ -63,7 +68,7 @@ collections:
             widget: list
             required: false
             fields:
-              - { name: image, label: Fotografie, widget: image }
+              - { name: image, label: Fotografie, widget: image, choose_url: false }
               - { name: alt, label: Popis fotografie, widget: string, required: false }
           - { name: trips_title, label: "Výlety: nadpis", widget: string }
           - { name: trips_intro, label: "Výlety: úvodní věta", widget: string, required: false }
@@ -133,6 +138,6 @@ collections:
           - { name: item, label: "Položka (např. Hlavní sezóna, za osobu a noc)", widget: string }
           - { name: price, label: Cena (např. 600 Kč), widget: string }
       - { name: price_note, label: Poznámka pod ceníkem, widget: string, required: false }
-      - { name: photo, label: Fotografie, widget: image }
+      - { name: photo, label: Fotografie, widget: image, choose_url: false }
       - { name: photo_alt, label: Popis fotografie, widget: string, required: false }
       - { name: body, label: Popis, widget: markdown }
