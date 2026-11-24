@@ -9,14 +9,17 @@ import { typo } from '../lib/typo';
 const { data: home, Content: Intro } = await getPage('home');
 const objects = await getObjects();
 const indexable = import.meta.env.PUBLIC_INDEXABLE === 'true';
-const og = home.hero_image ? await getImage({ src: home.hero_image, width: 1200, format: 'jpeg' }) : undefined;
+// Fotka je buď nahraná do webu (zmenší se a převede do WebP), nebo odkaz na cizí web (zobrazí se tak, jak je).
+const remote = (src: unknown): src is string => typeof src === 'string';
+const og = !home.hero_image ? undefined : remote(home.hero_image) ? { src: home.hero_image } : await getImage({ src: home.hero_image, width: 1200, format: 'jpeg' });
 // Plné rozlišení pro zvětšení v galerii
-const full = await Promise.all(home.gallery.map((g) => getImage({ src: g.image, width: 1800, format: 'webp' })));
+const full = await Promise.all(home.gallery.map((g) => (remote(g.image) ? { src: g.image } : getImage({ src: g.image, width: 1800, format: 'webp' }))));
 ---
 <Base title={home.title} description={home.description} home ogImage={og?.src}>
   <section class="hero" aria-labelledby="hero-title">
-    {home.hero_image && (
-      <Image src={home.hero_image} alt={home.hero_alt} widths={[800, 1280, 1920, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
+    {home.hero_image && (remote(home.hero_image)
+      ? <img src={home.hero_image} alt={home.hero_alt} loading="eager" fetchpriority="high" />
+      : <Image src={home.hero_image} alt={home.hero_alt} widths={[800, 1280, 1920, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
     )}
     <div class="copy">
       <div class="wrap">
@@ -33,7 +36,9 @@ const full = await Promise.all(home.gallery.map((g) => getImage({ src: g.image, 
       <div class="lead prose"><Intro /></div>
       {objects.map((o, i) => (
         <article class={`object${i % 2 ? ' flip' : ''}`} id={o.slug} aria-labelledby={`${o.slug}-title`}>
-          <Image src={o.data.photo} alt={o.data.photo_alt} widths={[600, 900, 1300]} sizes="(min-width: 60rem) 34rem, 100vw" />
+          {remote(o.data.photo)
+            ? <img src={o.data.photo} alt={o.data.photo_alt} loading="lazy" decoding="async" />
+            : <Image src={o.data.photo} alt={o.data.photo_alt} widths={[600, 900, 1300]} sizes="(min-width: 60rem) 34rem, 100vw" />}
           <div class="text">
             <h3 id={`${o.slug}-title`}>{o.data.title}</h3>
             <p class="tagline">{typo(o.data.tagline)}</p>
@@ -67,7 +72,9 @@ const full = await Promise.all(home.gallery.map((g) => getImage({ src: g.image, 
           {home.gallery.map((g, i) => (
             <li>
               <a href={full[i].src} data-lightbox aria-label={`Zvětšit fotografii ${i + 1}${g.alt ? `: ${g.alt}` : ''}`}>
-                <Image src={g.image} alt={g.alt} widths={[400, 700]} sizes="(min-width: 60rem) 22rem, 50vw" />
+                {remote(g.image)
+                  ? <img src={g.image} alt={g.alt} loading="lazy" decoding="async" />
+                  : <Image src={g.image} alt={g.alt} widths={[400, 700]} sizes="(min-width: 60rem) 22rem, 50vw" />}
               </a>
             </li>
           ))}
