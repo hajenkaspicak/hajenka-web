@@ -8,7 +8,7 @@ hero_alt: Zástupný obrázek, sem přijde letecký snímek Hájenky na kraji le
 accommodation_title: Ubytování a ceník
 gallery_title: Fotogalerie
 gallery:
-  - image: https://picsum.photos/id/634/1920/1280.webp
+  - image: ../../assets/uploads/4-9199+.jpg
     alt: Šumava
   - image: ../../assets/uploads/5-6078+.jpg
     alt: Zástupný obrázek
