@@ -61,7 +61,7 @@ reviews:
     date: 21. 9. 2018, ubytováni - podzim 2018
     text: Naprosty klid. Uzasni majitele, skvela kuchyne. Vsem doporucujeme. Bylo o nas pecovano jako v bavlnce.
 contact_title: Poptávka a kontakt
-contact_intro: Napište nám termín a počet osob. Odpovíme e-mailem s konkrétní cenou.
+contact_intro: Napište nám termín a počet osob. Odpovíme e-mailem s konkrétní cenou. Nebo nám zavolejte.
 ---
 
 Dvě ubytování na Šumavě: dům **Hájenka Špičák** pro až deset hostů na kraji lesa a **Apartmán K Debrníku** v Železné Rudě pro až pět hostů.
