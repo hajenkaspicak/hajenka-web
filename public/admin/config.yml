@@ -2,9 +2,9 @@
 # Řádky označené DOPLNIT se mění podle kroků v průvodci.
 backend:
   name: github
-  repo: DOPLNIT-UCET/DOPLNIT-REPOZITAR      # např. hajenka-admin/hajenka-web
+  repo: hajenkaspicak/hajenka-web      # např. hajenka-admin/hajenka-web
   branch: main
-  base_url: https://sveltia-cms-auth.DOPLNIT.workers.dev   # adresa přihlašovacího Workeru
+  base_url: https://sveltia-cms-auth.hajenka-web.workers.dev   # adresa přihlašovacího Workeru
 
 app_title: Hájenka Špičák – správa webu
 site_url: https://hajenkaspicak.cz
