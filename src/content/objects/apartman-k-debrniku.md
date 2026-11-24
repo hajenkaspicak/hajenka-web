@@ -13,9 +13,10 @@ prices:
   - item: Cena za osobu a noc
     price: od 500 Kč
 price_note: Ceny odpovídají nabídce na e-chalupy.cz. Sezónní ceny a příplatky doplní majitel.
-photo: ../../assets/uploads/zastupna-fotka.jpg
+photo: ../../assets/uploads/ap1.jpg
 photo_alt: Zástupný obrázek, fotografii apartmánu doplníme
 ---
+
 Apartmán K Debrníku je v prvním patře apartmánového domu v Železné Rudě. Je u řeky, u lesa a zároveň jen 3 minuty pěšky od centra.
 
 Je určený pro až pět hostů a má jednu ložnici. Mazlíčci jsou vítáni.
