@@ -4,7 +4,7 @@ backend:
   name: github
   repo: hajenkaspicak/hajenka-web      # např. hajenka-admin/hajenka-web
   branch: main
-  base_url: https://sveltia-cms-auth.hajenka-web.workers.dev   # adresa přihlašovacího Workeru
+  base_url: https://sveltia-cms-auth.hajenka-spicak.workers.dev   # adresa přihlašovacího Workeru
 
 app_title: Hájenka Špičák – správa webu
 site_url: https://hajenkaspicak.cz
