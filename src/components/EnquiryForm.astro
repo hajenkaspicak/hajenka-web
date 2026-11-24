@@ -81,7 +81,7 @@ const redirect = new URL('/dekujeme/', Astro.site).href;
       loading = true;
       try {
         if (mode === 'hcaptcha') {
-          await load('https://js.hcaptcha.com/1/api.js?render=explicit&hl=cs');
+          await load('https://js.hcaptcha.com/1/api.js?render=explicit&hl=cs&recaptchacompat=off');
           const box = form.querySelector<HTMLElement>('[data-captcha-box]')!;
           // @ts-ignore – globální objekt hCaptcha
           widget = window.hcaptcha.render(box, { sitekey: form.dataset.hcaptchaKey });
