@@ -1,8 +1,8 @@
 ---
-title: Hájenka Špičák – ubytování na Šumavě
-description: Hájenka Špičák na kraji lesa a Apartmán K Debrníku v Železné Rudě. Ubytování na Šumavě pro rodiny i se psem, sjezdovka asi 80 m od Hájenky.
-hero_title: Šumava – příroda, která léčí
-hero_lead: Ubytování na Šumavě ve Špičáku a v Železné Rudě
+title: Hájenka Špičák – Šumava zblízka
+description: Hájenka Špičák se krývá na kraji lesa u úpatí kopce Pancíř a Apartmán K Debrníku v Železné Rudě. Ubytování pro rodiny i se psem, sjezdovka asi 80 m od Hájenky.
+hero_title: Šumava – čistá příroda a relax
+hero_lead: Ubytování ve Špičáku a v Železné Rudě
 hero_image: ../../assets/uploads/IMG_7613_hero.jpg
 hero_alt: Letecký snímek Hájenky na kraji lesa na svahu hory Pancíř na Šumavě
 accommodation_title: Nabídka ubytování
