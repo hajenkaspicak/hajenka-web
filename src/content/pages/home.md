@@ -12,9 +12,9 @@ gallery:
     alt: Přesná lokalita, Šumava
   - image: ../../assets/uploads/5-6078+.jpg
     alt: Přesná lokalita, Šumava
-  - image: ../../assets/uploads/48371073_1986977124748733_7354232188377759744_n.jpg
-    alt: Pohled od Hájenky na zimní Špičák.
-  - image: ../../assets/uploads/49371965_2015734091873036_945991311725428736_n.jpg
+  - image: ../../assets/uploads/20260626_113501.jpg
+    alt: ''
+  - image: ../../assets/uploads/IMG_1447.jpg
     alt: Zímní pobyt v příapdě potřeby i s dopravou od parkoviště (pro vozy bez náhonu 4x4).
   - image: ../../assets/uploads/926346511_29934735446212859_8131620426104046219_n.avif.jpeg
     alt: Přesná lokalita, Šumava (případně i období)
