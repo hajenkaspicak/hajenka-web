@@ -12,7 +12,7 @@ features:
 prices:
   - item: Cena za osobu a noc
     price: od 500 Kč
-price_note: Ceny odpovídají nabídce na e-chalupy.cz. Sezónní ceny a příplatky doplní majitel.
+price_note: Sezónní cena v období 25. prosince až 2. ledna je cena 600 Kč/osobu/noc.
 photo: ../../assets/uploads/ap1.jpg
 photo_alt: Zástupný obrázek, fotografii apartmánu doplníme
 ---
