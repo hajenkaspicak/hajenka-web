@@ -12,7 +12,7 @@ features:
   - Nekuřácký dům
 prices:
   - item: Cena za osobu a noc
-    price: 500–650 Kč
+    price: 500 Kč
 price_note: Sezónní cena v období 25. prosince až 2. ledna je cena 600 Kč/osobu/noc.
 photo: ../../assets/uploads/hajenka.jpg
 photo_alt: fotografie penzionu Hájenka Špičák
