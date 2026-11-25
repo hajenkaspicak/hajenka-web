@@ -4,20 +4,20 @@ description: Hájenka Špičák na kraji lesa a Apartmán K Debrníku v Železn�
 hero_title: Šumava – příroda, která léčí
 hero_lead: Ubytování na Šumavě ve Špičáku a v Železné Rudě
 hero_image: ../../assets/uploads/Pancir-2005.jpg
-hero_alt: Zástupný obrázek, sem přijde letecký snímek Hájenky na kraji lesa
-accommodation_title: Ubytování a ceník
+hero_alt: Letecký snímek Hájenky na kraji lesa na svahu hory Pancíř na Šumavě
+accommodation_title: Nabídka ubytování
 gallery_title: Fotogalerie
 gallery:
   - image: ../../assets/uploads/4-9199+.jpg
-    alt: Šumava
+    alt: Přesná lokalita, Šumava
   - image: ../../assets/uploads/5-6078+.jpg
-    alt: Zástupný obrázek
-  - image: ../../assets/uploads/zastupna-fotka.jpg
-    alt: Zástupný obrázek
-  - image: ../../assets/uploads/zastupna-fotka.jpg
-    alt: Zástupný obrázek
-  - image: ../../assets/uploads/zastupna-fotka.jpg
-    alt: Zástupný obrázek
+    alt: Přesná lokalita, Šumava
+  - image: ../../assets/uploads/48371073_1986977124748733_7354232188377759744_n.jpg
+    alt: Pohled od Hájenky na zimní Špičák.
+  - image: ../../assets/uploads/49371965_2015734091873036_945991311725428736_n.jpg
+    alt: Zímní pobyt v příapdě potřeby i s dopravou od parkoviště (pro vozy bez náhonu 4x4).
+  - image: ../../assets/uploads/926346511_29934735446212859_8131620426104046219_n.avif.jpeg
+    alt: Přesná lokalita, Šumava (případně i období)
   - image: ../../assets/uploads/zastupna-fotka.jpg
     alt: Zástupný obrázek
 trips_title: Výlety po okolí
