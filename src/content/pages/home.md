@@ -23,7 +23,7 @@ gallery:
 trips_title: Výlety po okolí
 trips_intro: Vzdálenosti jsou od Hájenky.
 trips:
-  - title: Skiareál Špičák
+  - title: Weissova louka
     distance: asi 80 m
     text: Na sjezdovku se od Hájenky dostanete po vrstevnici pěšky, bez auta.
     link: ''
@@ -36,12 +36,16 @@ trips:
     text: Největší ledovcové jezero v Česku. Od června do konce září k němu ze Špičáckého sedla jezdí silniční vláček Šumaváček.
     link: ''
   - title: Pancíř
-    distance: ''
+    distance: cca 3 km
     text: Vrchol ve výšce 1214 m s rozhlednou a horskou chatou. Ze Špičáku vede lanovka s mezistanicí Hofmanky, pěšky je to asi 3 km po červené značce. Za dobré viditelnosti je odsud vidět až na Alpy.
     link: ''
   - title: Železná Ruda
     distance: 3,5 km
     text: Centrum s obchody, restauracemi a nádražím. Bavorsko začíná hned za hranicí.
+    link: ''
+  - title: Šumavský Špičák
+    distance: cca 1,5 km
+    text: Hora Špičák (1 202 m n. m.) se tyčí přímo nad Hájenkou a na jejím vrcholu stojí od roku 2014 dřevěná rozhledna vysoká 26,5 metru. Za jasného dne z ní uvidíte celou Šumavu, Bavorský les, a když máte štěstí, i Alpy. K areálu Ski&Bike Špičák to máte od nás jen [X minut pěšky], takže v zimě vyrazíte na sjezdovky skoro od dveří a v létě na trailové a cyklistické trasy. Lanovka vás vyveze až pod vrchol, takže na výhled se dostanete i bez dlouhého stoupání.
     link: ''
 reviews_title: Co o nás píší hosté
 reviews:
